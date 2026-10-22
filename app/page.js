@@ -44,8 +44,8 @@ export default function Home() {
   async function handleExcluirParticipante(participante) {
     const confirmar = window.confirm(`Excluir ${participante.nome}? As inscrições deste participante também serão removidas.`);
     if (!confirmar) return;
-    const { ok } = await deletarParticipante(participante.id);
-    if (!ok) { setMensagem({ tipo: 'erro', texto: 'Não foi possível excluir o participante.' }); return; }
+    const { ok, dados } = await deletarParticipante(participante.id);
+    if (!ok) { setMensagem({ tipo: 'erro', texto: dados.erro || 'Não foi possível excluir o participante.' }); return; }
     setMensagem({ tipo: 'sucesso', texto: 'Participante excluído com sucesso.' });
     await Promise.all([carregarParticipantes(), carregarEventos()]);
   }
