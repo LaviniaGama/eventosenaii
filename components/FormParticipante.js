@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 
@@ -6,55 +6,13 @@ export default function FormParticipante({ onCadastrar }) {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [turma, setTurma] = useState('');
+  const [salvo, setSalvo] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!nome || !email || !turma) return;
-
     const sucesso = await onCadastrar({ nome, email, turma });
-    if (sucesso) {
-      setNome('');
-      setEmail('');
-      setTurma('');
-    }
+    if (sucesso) { setNome(''); setEmail(''); setTurma(''); setSalvo(true); setTimeout(() => setSalvo(false), 3500); }
   }
 
-  return (
-    <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}>
-      <h2>Cadastrar Participante</h2>
-      <div style={{ marginBottom: '0.5rem' }}>
-        <label style={{ display: 'block' }}>Nome:</label>
-        <input 
-          type="text" 
-          value={nome} 
-          onChange={(e) => setNome(e.target.value)} 
-          required 
-          style={{ width: '100%', padding: '0.4rem' }}
-        />
-      </div>
-      <div style={{ marginBottom: '0.5rem' }}>
-        <label style={{ display: 'block' }}>E-mail:</label>
-        <input 
-          type="email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-          style={{ width: '100%', padding: '0.4rem' }}
-        />
-      </div>
-      <div style={{ marginBottom: '0.5rem' }}>
-        <label style={{ display: 'block' }}>Turma:</label>
-        <input 
-          type="text" 
-          value={turma} 
-          onChange={(e) => setTurma(e.target.value)} 
-          required 
-          style={{ width: '100%', padding: '0.4rem' }}
-        />
-      </div>
-      <button type="submit" style={{ marginTop: '0.5rem', padding: '0.5rem 1rem' }}>
-        Cadastrar
-      </button>
-    </form>
-  );
+  return <form className="form-card" onSubmit={handleSubmit}><h3>Novo participante</h3><p className="form-intro">Cadastre os dados para liberar a inscrição nos eventos.</p><div className="form-fields"><label>Nome completo<input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome do participante" required /></label><label>E-mail<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nome@email.com" required /></label><label>Turma<input type="text" value={turma} onChange={(e) => setTurma(e.target.value)} placeholder="Ex.: 2º ano de Desenvolvimento" required /></label></div><button className="button button-primary" type="submit">＋ Cadastrar participante</button>{salvo && <p className="inline-success">Participante cadastrado com sucesso.</p>}</form>;
 }
